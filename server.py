@@ -1,5 +1,6 @@
 # server.py
-from flask import Flask, request, jsonify
+from flask import Flask
+from gevent.pywsgi import WSGIServer
 import subprocess
 import copy
 
@@ -53,3 +54,10 @@ def turn_on_hdmi():
     command.append("1")
     print ("Executing command: ", command)
     return subprocess.check_output(command)
+
+if __name__ == "__main__":
+    # Debug/Development
+    # app.run(debug=True, host="0.0.0.0", port="5000")
+    # Production
+    http_server = WSGIServer(('', 5000), app)
+    http_server.serve_forever()
